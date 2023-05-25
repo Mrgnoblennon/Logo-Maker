@@ -19,6 +19,19 @@ inquirer
       },
     },
 
+    //adding prompt for text color with keyword command or a hexadecimal number
+    {
+        type: 'input',
+        name: 'textColour',
+        message: 'Enter a color keyword or hexadecimal number:',
+        validate: (input) => {
+          //validate that the input is a color keyword or a hexadecimal number
+          const isColorKeyword = /^[a-zA-Z]+$/.test(input);
+          const isHexNumber = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/i.test(input);
+          return isColorKeyword || isHexNumber ? true : 'Please enter a valid color keyword or hexadecimal number.';
+        },
+    },
+
     {
       type: 'list',
       name: 'shape',
@@ -28,7 +41,7 @@ inquirer
   ])
   .then((answers) => {
 
-    const { text, shape } = answers;
+    const { text, textColour, shape } = answers;
 
     const textProcessor = new TextProcessor(text);
 
@@ -54,6 +67,7 @@ inquirer
 
     // log check
     console.log('Processed text:', processedText);
+    console.log('Selected text colour:', textColour);
     console.log('Selected shape:', selectedShape);
 
     //
