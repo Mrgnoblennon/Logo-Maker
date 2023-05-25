@@ -21,15 +21,15 @@ inquirer
 
     //adding prompt for text color with keyword command or a hexadecimal number
     {
-        type: 'input',
-        name: 'textColour',
-        message: 'Enter a color keyword or hexadecimal number:',
-        validate: (input) => {
+      type: 'input',
+      name: 'textColor',
+      message: 'Enter a color keyword or hexadecimal number:',
+      validate: (input) => {
           //validate that the input is a color keyword or a hexadecimal number
           const isColorKeyword = /^[a-zA-Z]+$/.test(input);
           const isHexNumber = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/i.test(input);
           return isColorKeyword || isHexNumber ? true : 'Please enter a valid color keyword or hexadecimal number.';
-        },
+      },
     },
 
     {
@@ -38,15 +38,36 @@ inquirer
       message: 'Select a shape:',
       choices: ['Circle', 'Triangle', 'Square'],
     },
+
+    {
+        type: 'input',
+        name: 'shapeColor',
+        message: 'Enter a color keyword or hexadecimal number for the shape:',
+        validate: (input) => {
+          //validate that the input is a color keyword or a hexadecimal number
+          const isColorKeyword = /^[a-zA-Z]+$/.test(input);
+          const isHexNumber = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/i.test(input);
+          return isColorKeyword || isHexNumber ? true : 'Please enter a valid color keyword or hexadecimal number.';
+        },
+      },
   ])
   .then((answers) => {
 
-    const { text, textColour, shape } = answers;
+    const { text, textColor, shape, shapeColor } = answers;
+
+    //turning text into an object
+    const textObject = {
+        text: text,
+        textColor: textColor,
+      };
 
     const textProcessor = new TextProcessor(text);
 
     //process the entered text using the textProcessor instance
     const processedText = textProcessor.transformText();
+
+
+    textObject.textColor = textColor;
 
     //based on the user's choice, create the corresponding shape instance
     let selectedShape;
@@ -65,10 +86,12 @@ inquirer
         return;
     }
 
+    selectedShape.shapeColor = shapeColor;
+
     // log check
-    console.log('Processed text:', processedText);
-    console.log('Selected text colour:', textColour);
+    console.log('Processed text:', textObject);
     console.log('Selected shape:', selectedShape);
+
 
     //
   })
