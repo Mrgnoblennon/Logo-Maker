@@ -3,10 +3,22 @@ const inquirer = require('inquirer');
 
 //call module
 const { Circle, Triangle, Square } = require('./lib/shapes');
+const TextProcessor = require('./lib/text');
 
 //prompt the user to choose a shape
 inquirer
   .prompt([
+    {
+      type: 'input',
+      name: 'text',
+      message: 'Enter up to 3 characters:',
+      validate: (input) => {
+
+        //validate that the input contains up to three characters
+        return input.length <= 3 ? true : 'Please enter up to 3 characters.';
+      },
+    },
+
     {
       type: 'list',
       name: 'shape',
@@ -15,7 +27,13 @@ inquirer
     },
   ])
   .then((answers) => {
-    const { shape } = answers;
+
+    const { text, shape } = answers;
+
+    const textProcessor = new TextProcessor(text);
+
+    //process the entered text using the textProcessor instance
+    const processedText = textProcessor.transformText();
 
     //based on the user's choice, create the corresponding shape instance
     let selectedShape;
@@ -35,6 +53,7 @@ inquirer
     }
 
     // log check
+    console.log('Processed text:', processedText);
     console.log('Selected shape:', selectedShape);
 
     //
