@@ -1,5 +1,7 @@
 //call frameworks
 const inquirer = require('inquirer');
+const path = require('path');
+const fs = require('fs');
 
 //call module
 const { Circle, Triangle, Square } = require('./lib/shapes');
@@ -64,7 +66,7 @@ inquirer
     const textProcessor = new TextProcessor(text);
 
     //process the entered text using the textProcessor instance
-    const processedText = textProcessor.transformText();
+    const processedText = textProcessor.transformText();  
 
 
     textObject.textColor = textColor;
@@ -86,14 +88,48 @@ inquirer
         return;
     }
 
-    selectedShape.shapeColor = shapeColor;
+    selectedShape.color = shapeColor;
 
-    // log check
+      //create the SVG code as a string
+  let svgCode = `<svg width="200" height="200">`;
+
+  //create the shape based on the user's selection
+  if (selectedShape instanceof Circle) {
+    svgCode += `<circle cx="100" cy="100" r="${selectedShape.radius * 10}" fill="${selectedShape.color}" />`;
+  } else if (selectedShape instanceof Triangle) {
+    svgCode += `<polygon points="0,100 50,0 100,100" fill="${selectedShape.color}" />`;
+  } else if (selectedShape instanceof Square) {
+    svgCode += `<rect x="50" y="50" width="${selectedShape.sideLength * 10}" height="${selectedShape.sideLength * 10}" fill="${selectedShape.color}" />`;
+  }
+
+    //create the text element
+    svgCode += `<text x="50" y="150" fill="${textColor}">${processedText}</text>`;
+
+    //close the SVG code
+    svgCode += `</svg>`;
+
+    //generate a unique filename
+    const timestamp = Date.now();
+    const filename = `logo_${timestamp}.svg`;
+    const directoryPath = path.join(__dirname, 'examples')
+    const filePath = path.join(directoryPath, filename);
+
+    //save the SVG code to a file
+    fs.writeFile(filePath, svgCode, (err) => {
+      if (err) {
+        console.error('Error saving SVG file:', err);
+      } else {
+        console.log(`SVG file saved successfully: ${filePath}`);
+      }
+    });
+  
+  //log check
+  
     console.log('Processed text:', textObject);
     console.log('Selected shape:', selectedShape);
+    console.log(svgCode);
 
 
-    //
   })
   .catch((error) => {
     console.error('Error:', error);
