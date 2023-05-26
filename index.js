@@ -91,37 +91,67 @@ inquirer
     selectedShape.color = shapeColor;
 
       //create the SVG code as a string
-  let svgCode = `<svg width="200" height="200">`;
+      //specified size
+  let svgCode = `<svg width="300" height="200">`;
 
   //create the shape based on the user's selection
   if (selectedShape instanceof Circle) {
-    svgCode += `<circle cx="100" cy="100" r="${selectedShape.radius * 10}" fill="${selectedShape.color}" />`;
-  } else if (selectedShape instanceof Triangle) {
-    svgCode += `<polygon points="0,100 50,0 100,100" fill="${selectedShape.color}" />`;
-  } else if (selectedShape instanceof Square) {
-    svgCode += `<rect x="50" y="50" width="${selectedShape.sideLength * 10}" height="${selectedShape.sideLength * 10}" fill="${selectedShape.color}" />`;
-  }
+    const cx = 150;
+    const cy = 100;
+    const r = selectedShape.radius * 10;
+  
+    //create shape element with chosen color
+    svgCode += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${selectedShape.color}" />`;
+
+    //calculate the position of the text
+    const textX = cx;
+    const textY = cy;
 
     //create the text element
-    svgCode += `<text x="50" y="150" fill="${textColor}">${processedText}</text>`;
+    svgCode += `<text x="${textX}" y="${textY}" fill="${textColor}" text-anchor="middle" alignment-baseline="central">${processedText}</text>`;
 
-    //close the SVG code
-    svgCode += `</svg>`;
 
-    //generate a unique filename
-    const timestamp = Date.now();
-    const filename = `logo_${timestamp}.svg`;
-    const directoryPath = path.join(__dirname, 'examples')
-    const filePath = path.join(directoryPath, filename);
+  } else if (selectedShape instanceof Triangle) {
+    const points = '0,100 50,0 100,100';
 
-    //save the SVG code to a file
-    fs.writeFile(filePath, svgCode, (err) => {
+    svgCode += `<polygon points="${points}" fill="${selectedShape.color}" />`;
+  
+    const textX = 50;
+    const textY = 60;
+  
+    svgCode += `<text x="${textX}" y="${textY}" fill="${textColor}" text-anchor="middle" alignment-baseline="central">${processedText}</text>`;
+
+  } else if (selectedShape instanceof Square) {
+    const x = 50;
+    const y = 50;
+    const width = selectedShape.sideLength * 10;
+    const height = selectedShape.sideLength * 10;
+  
+    svgCode += `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${selectedShape.color}" />`;
+  
+    const textX = x + width / 2;
+    const textY = y + height / 2;
+  
+    svgCode += `<text x="${textX}" y="${textY}" fill="${textColor}" text-anchor="middle" alignment-baseline="central">${processedText}</text>`;
+  }
+
+  //close the SVG code
+  svgCode += `</svg>`;
+  
+  //generate a unique filename
+  const timestamp = Date.now();
+  const filename = `logo_${timestamp}.svg`;
+  const directoryPath = path.join(__dirname, 'examples')
+  const filePath = path.join(directoryPath, filename);
+  
+  //save the SVG code to a file
+  fs.writeFile(filePath, svgCode, (err) => {
       if (err) {
-        console.error('Error saving SVG file:', err);
+      console.error('Error saving SVG file:', err);
       } else {
-        console.log(`SVG file saved successfully: ${filePath}`);
+      console.log(`SVG file saved successfully: ${filePath}`);
       }
-    });
+  });
   
   //log check
   
