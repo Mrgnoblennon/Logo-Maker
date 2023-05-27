@@ -141,6 +141,8 @@ inquirer
   //generate a unique filename
   const timestamp = Date.now();
   const filename = `logo_${timestamp}.svg`;
+
+  //file directory
   const directoryPath = path.join(__dirname, 'examples')
   const filePath = path.join(directoryPath, filename);
   
