@@ -92,7 +92,7 @@ inquirer
 
       //create the SVG code as a string
       //specified size
-  let svgCode = `<svg width="300" height="200">`;
+  let svgCode = `<svg width="300" height="200" font-size="30">`;
 
   //create the shape based on the user's selection
   if (selectedShape instanceof Circle) {
