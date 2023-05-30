@@ -158,13 +158,6 @@ inquirer
       console.log(`SVG file saved successfully: ${filePath}`);
       }
   });
-  
-  //log check
-  
-    console.log('Processed text:', textObject);
-    console.log('Selected shape:', selectedShape);
-    console.log(svgCode);
-
 
   })
   .catch((error) => {
