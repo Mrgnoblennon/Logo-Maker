@@ -97,10 +97,13 @@ inquirer
   //create the shape based on the user's selection
   if (selectedShape instanceof Circle) {
     const cx = 150;
-    const cy = 100;
+    const cy = 150;
     const r = selectedShape.radius * 10;
   
     //create shape element with chosen color
+    svgCode += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${selectedShape.color}" />`;
+
+    //create the text element
     svgCode += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${selectedShape.color}" />`;
 
     //calculate the position of the text
@@ -110,15 +113,16 @@ inquirer
     //create the text element
     svgCode += `<text x="${textX}" y="${textY}" fill="${textColor}" text-anchor="middle" alignment-baseline="central">${processedText}</text>`;
 
-
   } else if (selectedShape instanceof Triangle) {
     const points = '0,100 50,0 100,100';
+    const x = 50;
+    const y = 50;
 
-    svgCode += `<polygon points="${points}" fill="${selectedShape.color}" />`;
-  
+    svgCode += `<polygon points="${points}" x="${x}" y="${y}" fill="${selectedShape.color}" />`;
+
     const textX = 50;
     const textY = 60;
-  
+
     svgCode += `<text x="${textX}" y="${textY}" fill="${textColor}" text-anchor="middle" alignment-baseline="central">${processedText}</text>`;
 
   } else if (selectedShape instanceof Square) {
@@ -126,12 +130,12 @@ inquirer
     const y = 50;
     const width = selectedShape.sideLength * 10;
     const height = selectedShape.sideLength * 10;
-  
+
     svgCode += `<rect x="${x}" y="${y}" width="${width}" height="${height}" fill="${selectedShape.color}" />`;
-  
+
     const textX = x + width / 2;
     const textY = y + height / 2;
-  
+
     svgCode += `<text x="${textX}" y="${textY}" fill="${textColor}" text-anchor="middle" alignment-baseline="central">${processedText}</text>`;
   }
 
